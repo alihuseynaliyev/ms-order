@@ -5,6 +5,7 @@ import com.alinazim.m.sorder.model.response.ProductResponse;
 import com.alinazim.m.sorder.model.response.UserResponse;
 import com.alinazim.m.sorder.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +27,13 @@ public class OrderController {
         return orderService.getOrders(token);
     }
 
+
     @GetMapping("/{orderId}")
     public ProductResponse getOrder(@PathVariable Long orderId){
         return orderService.getOrder(orderId);
     }
 
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PutMapping("/{orderId}/products/{productId}")
     public void updateOrder(@PathVariable Long orderId, @PathVariable Long productId){
         orderService.updateOrder(orderId, productId);
